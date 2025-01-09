@@ -13,7 +13,23 @@ export class OrderService {
   }
 
   static async getById(id: string) {
-    return await Order.findById(id).populate("products.product");
+    return await Order.findById(id)
+    .populate({
+      path: 'products',
+      select: 'product',
+      populate: {
+        path: 'product',
+        select: 'brand product_name price description color category quantity isNewlyCreated image',
+        populate: {
+          path: 'brand',	
+          select: 'brand_name'
+        }
+      } 
+    })
+    .populate({
+      path: 'user',
+      select: 'fullname'  
+    })
   }
 
   static async Add(data: OrderType) {
