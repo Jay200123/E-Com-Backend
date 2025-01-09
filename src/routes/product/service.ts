@@ -3,13 +3,17 @@ import { Product as ProductType } from "../../interface";
 
 export class ProductService {
   static async getAll() {
-    return await Product.find();
+    return await Product.find()
+    .populate({
+      path:'brand',
+      select: 'brand_name'
+    })
   }
   static async getOne(id: string) {
     return await Product.findById(id)
     .populate({
       path: 'brand',  
-      select: 'brand_name'
+      select: 'brand_name'  
     })
   }
   static async Add(data: ProductType) {
